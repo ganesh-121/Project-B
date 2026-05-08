@@ -11,7 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* ── SETTINGS ── */
 function loadSettings() {
-  const s = DB.getSettings();
+  let s = DB.getSettings();
+  
+  // Auto-update old contact info if found in localStorage
+  if (s.phone === '9443343224' || s.email === 'sgcm@121') {
+    s.phone = '8639979749';
+    s.email = 'sgcm121@gmail.com';
+    s.whatsapp = '918639979749';
+    DB.saveSettings(s);
+  }
   setText('nav-shop-name', s.shopName || 'SGCM');
   setText('nav-tagline', s.tagline || 'Elegance Woven in Every Thread');
   setText('hero-title', s.fullName || 'Sri Ganesh Cloth Merchants');
