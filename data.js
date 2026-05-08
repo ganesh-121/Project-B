@@ -33,16 +33,20 @@ const DB = {
     aboutText: 'Established with a passion for authentic Indian textiles, SGCM (Sri Ganesh Cloth Merchants) has been serving customers with the finest handpicked sarees. We bring you the best of traditional craftsmanship from across India — from the grandeur of Banarasi Brocade to the delicate beauty of Chanderi Cotton.',
     bannerText: '🎉 Grand Sale — Up to 20% OFF on selected sarees!',
     founded: '2004',
-    adminPassword: 'admin123'
+    adminPassword: 'admin123',
+    settingsV: 3
   },
 
   migrate() {
     const s = this.getSettings();
-    let changed = false;
-    if (s.phone === '9443343224' || s.phone === '8639979749') { s.phone    = '8639979748';  changed = true; }
-    if (s.email === 'sgcm@121')                               { s.email    = 'sgcm121@gmail.com'; changed = true; }
-    if (s.whatsapp === '919443343224' || s.whatsapp === '918639979749') { s.whatsapp = '918639979748'; changed = true; }
-    if (changed) this.saveSettings(s);
+    // Version-based force update — bumping settingsV forces all browsers to update
+    if (!s.settingsV || s.settingsV < 3) {
+      s.phone    = '8639979748';
+      s.email    = 'sgcm121@gmail.com';
+      s.whatsapp = '918639979748';
+      s.settingsV = 3;
+      this.saveSettings(s);
+    }
   },
 
   init() {
