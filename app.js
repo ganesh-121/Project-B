@@ -26,9 +26,9 @@ function loadSettings() {
   setText('footer-addr', s.address || '');
   setText('footer-about', s.aboutText || '');
   const wa = document.getElementById('whatsapp-link');
-  if (wa) wa.href = `https://wa.me/${s.whatsapp || '919443343224'}`;
+  if (wa) wa.href = `https://wa.me/${s.whatsapp || '918639979749'}`;
   const ca = document.getElementById('call-link');
-  if (ca) ca.href = `tel:${s.phone || '9443343224'}`;
+  if (ca) ca.href = `tel:${s.phone || '8639979749'}`;
 }
 function setText(id, val) {
   const el = document.getElementById(id);
