@@ -36,6 +36,15 @@ const DB = {
     adminPassword: 'admin123'
   },
 
+  migrate() {
+    const s = this.getSettings();
+    let changed = false;
+    if (s.phone === '9443343224')        { s.phone    = '8639979749';         changed = true; }
+    if (s.email === 'sgcm@121')          { s.email    = 'sgcm121@gmail.com';   changed = true; }
+    if (s.whatsapp === '919443343224')   { s.whatsapp = '918639979749';        changed = true; }
+    if (changed) this.saveSettings(s);
+  },
+
   init() {
     if (!localStorage.getItem(this.KEYS.INIT)) {
       localStorage.setItem(this.KEYS.SAREES, JSON.stringify(this.DEFAULT_SAREES));
@@ -44,6 +53,7 @@ const DB = {
       localStorage.setItem(this.KEYS.FAVORITES, JSON.stringify([]));
       localStorage.setItem(this.KEYS.INIT, 'true');
     }
+    this.migrate();
   },
 
   getSarees() { return JSON.parse(localStorage.getItem(this.KEYS.SAREES) || '[]'); },
