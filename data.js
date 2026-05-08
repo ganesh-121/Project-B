@@ -26,9 +26,9 @@ const DB = {
     shopName: 'SGCM',
     fullName: 'Sri Ganesh Cloth Merchants',
     tagline: 'Elegance Woven in Every Thread',
-    whatsapp: '918639979749',
+    whatsapp: '918639979748',
     email: 'sgcm121@gmail.com',
-    phone: '8639979749',
+    phone: '8639979748',
     address: 'Main Market, Your City - 500001',
     aboutText: 'Established with a passion for authentic Indian textiles, SGCM (Sri Ganesh Cloth Merchants) has been serving customers with the finest handpicked sarees. We bring you the best of traditional craftsmanship from across India — from the grandeur of Banarasi Brocade to the delicate beauty of Chanderi Cotton.',
     bannerText: '🎉 Grand Sale — Up to 20% OFF on selected sarees!',
@@ -39,9 +39,9 @@ const DB = {
   migrate() {
     const s = this.getSettings();
     let changed = false;
-    if (s.phone === '9443343224')        { s.phone    = '8639979749';         changed = true; }
-    if (s.email === 'sgcm@121')          { s.email    = 'sgcm121@gmail.com';   changed = true; }
-    if (s.whatsapp === '919443343224')   { s.whatsapp = '918639979749';        changed = true; }
+    if (s.phone === '9443343224' || s.phone === '8639979749') { s.phone    = '8639979748';  changed = true; }
+    if (s.email === 'sgcm@121')                               { s.email    = 'sgcm121@gmail.com'; changed = true; }
+    if (s.whatsapp === '919443343224' || s.whatsapp === '918639979749') { s.whatsapp = '918639979748'; changed = true; }
     if (changed) this.saveSettings(s);
   },
 
