@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGCM — Sri Ganesh Cloth Merchants | Premium Sarees</title>
+  <meta name="description" content="SGCM — Sri Ganesh Cloth Merchants. Discover premium Indian sarees — Kanjivaram, Banarasi, Paithani and more. Elegance woven in every thread." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- BANNER -->
+<div id="banner">
+  <span id="banner-text">🎉 Grand Sale — Up to 20% OFF on selected sarees!</span>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="nav-inner">
+    <a class="logo-wrap" href="index.html" id="logo-link">
+      <div class="logo-emblem" id="logo-emblem">
+        <span class="logo-emblem-text">𑀲</span>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name" id="nav-shop-name">SGCM</span>
+        <span class="logo-tagline" id="nav-tagline">Elegance Woven in Every Thread</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html" class="active" id="nav-home">Home</a>
+      <a href="#collection" id="nav-collection">Collection</a>
+      <a href="#ai-section" id="nav-ai">AI Picks</a>
+      <a href="#about" id="nav-about">About</a>
+      <a href="#contact" id="nav-contact-link">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+      <button class="icon-btn" id="fav-btn" title="Favourites">❤️ <span class="badge hidden" id="fav-badge">0</span></button>
+      <button class="icon-btn" id="cart-btn" title="Cart">🛍️ <span class="badge hidden" id="cart-badge">0</span></button>
+      <a href="admin.html" class="icon-btn" id="admin-link" style="text-decoration:none">⚙️</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="peacock-bg">🦚</div>
+  <div style="position:relative;z-index:1">
+    <p class="hero-eyebrow">✦ Est. 2004 ✦</p>
+    <h1 id="hero-title">Sri Ganesh <span>Cloth Merchants</span></h1>
+    <div class="ornament"><span>🦚</span></div>
+    <p class="hero-sub" id="hero-tagline">Elegance Woven in Every Thread</p>
+    <div class="hero-cta">
+      <button class="btn-gold" onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})">Explore Collection</button>
+      <button class="btn-outline" onclick="document.getElementById('ai-section').scrollIntoView({behavior:'smooth'})">✨ AI Stylist</button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-grid">
+    <div class="stat-item"><span class="stat-number">500+</span><div class="stat-label">SAREE VARIETIES</div></div>
+    <div class="stat-item"><span class="stat-number">20+</span><div class="stat-label">YEARS TRUSTED</div></div>
+    <div class="stat-item"><span class="stat-number">10K+</span><div class="stat-label">HAPPY CUSTOMERS</div></div>
+    <div class="stat-item"><span class="stat-number">100%</span><div class="stat-label">AUTHENTIC FABRICS</div></div>
+  </div>
+</div>
+
+<!-- COLLECTION -->
+<section id="collection" style="background:var(--cream2)">
+  <div class="section-inner">
+    <div class="section-heading fade-up">
+      <p class="hero-eyebrow">✦ OUR COLLECTION ✦</p>
+      <h2>Handpicked Masterpieces</h2>
+      <div class="ornament"><span>❧</span></div>
+      <p>From the looms of India to your wardrobe</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <input type="text" id="search-input" placeholder="🔍 Search sarees..." />
+      <select id="filter-occasion">
+        <option value="">All Occasions</option>
+        <option>Wedding</option><option>Festival</option>
+        <option>Party</option><option>Casual</option><option>Office</option>
+      </select>
+      <select id="filter-fabric">
+        <option value="">All Fabrics</option>
+        <option>Silk</option><option>Cotton</option>
+        <option>Georgette</option><option>Linen</option>
+      </select>
+      <select id="filter-sort">
+        <option value="">Sort By</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="discount">Best Discount</option>
+      </select>
+      <button class="btn-sm" onclick="clearFilters()">✕ Clear</button>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+      <!-- Cards injected by JS -->
+    </div>
+
+    <div id="no-results" class="hidden" style="text-align:center;padding:40px;color:var(--text-light);font-family:'Cormorant Garamond',serif;font-size:1.2rem;">
+      🦚 No sarees match your search. Try different filters.
+    </div>
+  </div>
+</section>
+
+<!-- AI STYLIST -->
+<section id="ai-section">
+  <div class="section-inner">
+    <div class="section-heading fade-up">
+      <p class="hero-eyebrow">✦ AI STYLIST ✦</p>
+      <h2>Personalised Picks For You</h2>
+      <div class="ornament"><span>✨</span></div>
+      <p>Let our AI find your perfect saree match</p>
+    </div>
+    <div class="ai-panel">
+      <h3>✨ Tell us your preference</h3>
+      <div class="ai-form" id="ai-form">
+        <select id="ai-occasion">
+          <option value="">Any Occasion</option>
+          <option>Wedding</option><option>Festival</option>
+          <option>Party</option><option>Casual</option><option>Office</option>
+        </select>
+        <select id="ai-color">
+          <option value="">Any Color</option>
+          <option>Red</option><option>Golden</option><option>Blue</option>
+          <option>Green</option><option>Pink</option><option>Purple</option>
+          <option>Orange</option><option>Cream</option><option>Yellow</option><option>Maroon</option>
+        </select>
+        <select id="ai-fabric">
+          <option value="">Any Fabric</option>
+          <option>Silk</option><option>Cotton</option><option>Georgette</option><option>Linen</option>
+        </select>
+        <select id="ai-budget">
+          <option value="">Any Budget</option>
+          <option value="0-2000">Under ₹2,000</option>
+          <option value="2000-5000">₹2,000 – ₹5,000</option>
+          <option value="5000-10000">₹5,000 – ₹10,000</option>
+          <option value="10000-99999">Above ₹10,000</option>
+        </select>
+        <button class="btn-gold" onclick="runAI()" style="padding:10px 24px">🔮 Find My Saree</button>
+      </div>
+      <div id="ai-results" class="product-grid" style="margin-top:28px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:var(--cream2)">
+  <div class="section-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+    <div class="fade-up">
+      <p class="hero-eyebrow">✦ OUR STORY ✦</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--text-dark);margin-bottom:16px;">
+        Two Decades of <span class="text-gold">Authentic</span> Elegance
+      </h2>
+      <div class="ornament"><span>❧</span></div>
+      <p style="color:var(--text-mid);line-height:1.8;margin:16px 0;font-size:0.95rem;" id="about-text">
+        Established with a passion for authentic Indian textiles, SGCM has been serving customers with the finest handpicked sarees. We bring you the best of traditional craftsmanship from across India.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px">
+        <div class="admin-card" style="text-align:center">
+          <div class="stat-number" style="font-size:1.6rem;color:var(--gold-dark)">Silk</div>
+          <div class="stat-label" style="color:var(--text-light)">Expert Curators</div>
+        </div>
+        <div class="admin-card" style="text-align:center">
+          <div class="stat-number" style="font-size:1.6rem;color:var(--gold-dark)">PAN India</div>
+          <div class="stat-label" style="color:var(--text-light)">Sourced Directly</div>
+        </div>
+      </div>
+    </div>
+    <div class="fade-up" style="text-align:center">
+      <div style="width:280px;height:280px;margin:0 auto;border-radius:50%;border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--navy),var(--navy-light));box-shadow:var(--shadow-gold)">
+        <div style="text-align:center">
+          <div style="font-size:4rem">🦚</div>
+          <div class="logo-name" style="font-size:2rem;letter-spacing:4px;margin-top:8px">SGCM</div>
+          <div style="font-size:0.75rem;color:rgba(201,168,76,0.7);font-style:italic;margin-top:4px">Since 2004</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-heading">
+      <p class="hero-eyebrow">✦ REACH US ✦</p>
+      <h2>Contact Us</h2>
+      <div class="ornament"><span>✉</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:900px;margin:0 auto">
+      <div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--text-dark);margin-bottom:20px">Get In Touch</h3>
+        <div class="footer-contact-item"><span>📞</span><span id="contact-phone">9443343224</span></div>
+        <div class="footer-contact-item"><span>✉️</span><span id="contact-email">sgcm@121</span></div>
+        <div class="footer-contact-item"><span>📍</span><span id="contact-address">Main Market, Your City - 500001</span></div>
+        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+          <a id="whatsapp-link" href="https://wa.me/919443343224" target="_blank" class="btn-gold" style="text-decoration:none;padding:12px 24px;font-size:0.85rem">💬 WhatsApp Us</a>
+          <a id="call-link" href="tel:9443343224" class="btn-outline" style="text-decoration:none;padding:12px 24px;font-size:0.85rem">📞 Call Now</a>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h4 style="font-family:'Cinzel',serif;color:var(--navy);margin-bottom:16px">Send a Message</h4>
+        <div class="form-group"><label>Your Name</label><input type="text" placeholder="e.g. Priya Sharma" /></div>
+        <div class="form-group"><label>Phone / Email</label><input type="text" placeholder="Your contact" /></div>
+        <div class="form-group"><label>Message</label><textarea rows="3" placeholder="Tell us about the saree you're looking for..."></textarea></div>
+        <button class="btn-gold" style="width:100%" onclick="showToast('✅ Message noted! We will contact you soon.')">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-name" style="font-size:2rem;letter-spacing:4px">SGCM</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);margin-top:2px">Sri Ganesh Cloth Merchants</div>
+      <p id="footer-about">Bringing the finest handpicked sarees from across India. Tradition, elegance and authenticity — since 2004.</p>
+      <div style="margin-top:16px;font-size:1.6rem">🦚</div>
+    </div>
+    <div class="footer-col">
+      <h4>QUICK LINKS</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#ai-section">AI Stylist</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="admin.html">Admin Panel</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>CONTACT</h4>
+      <div class="footer-contact-item"><span>📞</span><span id="footer-phone">9443343224</span></div>
+      <div class="footer-contact-item"><span>✉️</span><span id="footer-email">sgcm@121</span></div>
+      <div class="footer-contact-item"><span>📍</span><span id="footer-addr">Main Market, Your City</span></div>
+    </div>
+  </div>
+  <div class="peacock-footer">🦚</div>
+  <div class="footer-bottom">
+    <span>© 2024 SGCM — Sri Ganesh Cloth Merchants. All rights reserved.</span>
+    <span style="color:var(--gold);font-family:'Cinzel',serif;letter-spacing:2px">✦ SGCM ✦</span>
+  </div>
+</footer>
+
+<!-- CART MODAL -->
+<div class="modal-overlay" id="cart-modal">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('cart-modal')">✕</button>
+    <h3>🛍️ Your Cart</h3>
+    <div id="cart-items"></div>
+    <div class="cart-total" id="cart-total"></div>
+    <div style="display:flex;gap:12px;margin-top:12px">
+      <button class="btn-sm" style="flex:1" onclick="clearCartUI()">🗑️ Clear</button>
+      <button class="btn-gold" style="flex:2" onclick="showToast('✅ Order placed! We will contact you shortly.')">Place Order via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAVOURITES MODAL -->
+<div class="modal-overlay" id="fav-modal">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    <h3>❤️ Favourites</h3>
+    <div id="fav-items" class="product-grid" style="margin-top:16px;grid-template-columns:1fr 1fr;"></div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal" style="max-width:580px">
+    <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<script src="data.js"></script>
+<script src="ai.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
