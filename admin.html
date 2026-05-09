@@ -72,6 +72,7 @@
     <!-- TABS -->
     <div class="admin-tabs">
       <button class="admin-tab active" onclick="switchTab('inventory')">📦 Inventory</button>
+      <button class="admin-tab" onclick="switchTab('customers')">👥 Customers</button>
       <button class="admin-tab" onclick="switchTab('add')">➕ Add Saree</button>
       <button class="admin-tab" onclick="switchTab('settings')">⚙️ Settings</button>
     </div>
@@ -98,7 +99,22 @@
       </div>
     </div>
 
-    <!-- ADD SAREE TAB -->
+    <!-- CUSTOMERS TAB -->
+    <div id="tab-customers" style="display:none">
+      <div class="admin-card">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--navy);margin-bottom:16px">👥 Registered Customers</h3>
+        <div style="overflow-x:auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th><th>Name</th><th>Phone Number</th><th>Total Orders</th>
+              </tr>
+            </thead>
+            <tbody id="cust-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     <div id="tab-add" style="display:none">
       <div class="admin-card" style="max-width:700px">
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--navy);margin-bottom:20px">➕ Add New Saree</h3>
@@ -230,29 +246,48 @@ document.getElementById('theme-toggle-admin').textContent = DB.getTheme() === 'd
 
 /* ── TABS ── */
 function switchTab(tab) {
-  ['inventory','add','settings'].forEach(t => {
-    document.getElementById(`tab-${t}`).style.display = t === tab ? 'block' : 'none';
+  ['inventory','customers','add','settings'].forEach(t => {
+    const el = document.getElementById(`tab-${t}`);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
   });
   document.querySelectorAll('.admin-tab').forEach((btn, i) => {
-    btn.classList.toggle('active', ['inventory','add','settings'][i] === tab);
+    btn.classList.toggle('active', ['inventory','customers','add','settings'][i] === tab);
   });
   if (tab === 'inventory') renderInventory();
+  if (tab === 'customers') renderCustomers();
   if (tab === 'settings') loadSettingsForm();
 }
 
 /* ── DASHBOARD STATS ── */
 function renderDash() {
   const sarees = DB.getSarees();
+  const users = DB.getUsers();
   const totalVal = sarees.reduce((a,s) => a + s.price * s.stock, 0);
   const oos = sarees.filter(s => s.stock === 0).length;
   const s = DB.getSettings();
   document.getElementById('dash-stats').innerHTML = `
     <div class="dash-stat"><div class="dash-stat-icon">🥻</div><div class="dash-stat-num">${sarees.length}</div><div class="dash-stat-label">TOTAL SAREES</div></div>
-    <div class="dash-stat"><div class="dash-stat-icon">✅</div><div class="dash-stat-num">${sarees.filter(s=>s.stock>0).length}</div><div class="dash-stat-label">IN STOCK</div></div>
+    <div class="dash-stat"><div class="dash-stat-icon">👥</div><div class="dash-stat-num">${users.length}</div><div class="dash-stat-label">CUSTOMERS</div></div>
     <div class="dash-stat"><div class="dash-stat-icon">⚠️</div><div class="dash-stat-num">${oos}</div><div class="dash-stat-label">OUT OF STOCK</div></div>
     <div class="dash-stat"><div class="dash-stat-icon">💰</div><div class="dash-stat-num">₹${(totalVal/1000).toFixed(0)}K</div><div class="dash-stat-label">INVENTORY VALUE</div></div>
   `;
   renderInventory();
+}
+
+function renderCustomers() {
+  const users = DB.getUsers();
+  const orders = DB.getOrders();
+  const tbody = document.getElementById('cust-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = users.map((u, i) => {
+    const userOrders = orders.filter(o => o.phone === u.phone).length;
+    return `<tr>
+      <td>${i+1}</td>
+      <td><strong>${u.name}</strong></td>
+      <td>${u.phone}</td>
+      <td>${userOrders} orders</td>
+    </tr>`;
+  }).join('');
 }
 
 /* ── INVENTORY TABLE ── */

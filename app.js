@@ -40,10 +40,13 @@ function loadSettings() {
   setText('footer-email', s.email || '');
   setText('footer-addr', s.address || '');
   setText('footer-about', s.aboutText || '');
+  
   const wa = document.getElementById('whatsapp-link');
   if (wa) wa.href = `https://wa.me/${s.whatsapp || '918639979748'}`;
   const ca = document.getElementById('call-link');
   if (ca) ca.href = `tel:${s.phone || '8639979748'}`;
+  const ml = document.getElementById('maps-link');
+  if (ml) ml.href = s.mapsUrl || '#';
 }
 function setText(id, val) {
   const el = document.getElementById(id);

@@ -30,21 +30,24 @@ const DB = {
     whatsapp: '918639979748',
     email: 'sgcm121@gmail.com',
     phone: '8639979748',
-    address: 'Main Market, Your City - 500001',
+    address: 'Chengalraopeta, Town Kotha Road, Visakhapatnam - 530001',
+    mapsUrl: 'https://goo.gl/maps/NQEXkCoHpoh5hbiH6?g_st=aw',
     aboutText: 'Established with a passion for authentic Indian textiles, SGCM (Sri Ganesh Cloth Merchants) has been serving customers with the finest handpicked sarees. We bring you the best of traditional craftsmanship from across India — from the grandeur of Banarasi Brocade to the delicate beauty of Chanderi Cotton.',
     bannerText: '🎉 Grand Sale — Up to 20% OFF on selected sarees!',
     founded: '2004',
     adminPassword: 'admin123',
-    settingsV: 3
+    settingsV: 4
   },
 
   migrate() {
     const s = this.getSettings();
-    if (!s.settingsV || s.settingsV < 3) {
+    if (!s.settingsV || s.settingsV < 4) {
       s.phone    = '8639979748';
       s.email    = 'sgcm121@gmail.com';
       s.whatsapp = '918639979748';
-      s.settingsV = 3;
+      s.address  = 'Chengalraopeta, Town Kotha Road, Visakhapatnam - 530001';
+      s.mapsUrl  = 'https://goo.gl/maps/NQEXkCoHpoh5hbiH6?g_st=aw';
+      s.settingsV = 4;
       this.saveSettings(s);
     }
   },
