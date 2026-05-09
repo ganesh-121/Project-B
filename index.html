@@ -37,6 +37,7 @@
       <button class="icon-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
       <button class="icon-btn" id="fav-btn" title="Favourites">❤️ <span class="badge hidden" id="fav-badge">0</span></button>
       <button class="icon-btn" id="cart-btn" title="Cart">🛍️ <span class="badge hidden" id="cart-badge">0</span></button>
+      <button class="icon-btn" id="user-btn" title="Account">👤</button>
       <a href="admin.html" class="icon-btn" id="admin-link" style="text-decoration:none">⚙️</a>
     </div>
   </div>
@@ -278,6 +279,62 @@
     <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
     <div id="detail-content"></div>
   </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal" style="max-width:400px">
+    <button class="modal-close" onclick="closeModal('auth-modal')">✕</button>
+    <div class="admin-tabs" style="margin-bottom:20px">
+      <button class="admin-tab active" id="tab-btn-login" onclick="switchAuthTab('login')">Login</button>
+      <button class="admin-tab" id="tab-btn-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+    
+    <div id="auth-login-form">
+      <h3 style="text-align:center">Welcome Back</h3>
+      <div class="form-group"><label>Phone Number</label><input type="text" id="login-phone" placeholder="9876543210"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-pw" placeholder="••••••••"/></div>
+      <button class="btn-gold" style="width:100%" onclick="handleLogin()">Sign In</button>
+    </div>
+
+    <div id="auth-signup-form" class="hidden">
+      <h3 style="text-align:center">Create Account</h3>
+      <div class="form-group"><label>Full Name</label><input type="text" id="signup-name" placeholder="Priya Sharma"/></div>
+      <div class="form-group"><label>Phone Number</label><input type="text" id="signup-phone" placeholder="9876543210"/></div>
+      <div class="form-group"><label>Set Password</label><input type="password" id="signup-pw" placeholder="••••••••"/></div>
+      <button class="btn-gold" style="width:100%" onclick="handleSignUp()">Create Account</button>
+      <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:12px">A confirmation message will be sent to your phone.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE / ORDERS MODAL -->
+<div class="modal-overlay" id="profile-modal">
+  <div class="modal" style="max-width:600px">
+    <button class="modal-close" onclick="closeModal('profile-modal')">✕</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:12px">
+      <h3 style="margin:0">👤 My Account</h3>
+      <button class="btn-sm" style="background:#ef4444;color:white;border:none" onclick="handleLogout()">Logout</button>
+    </div>
+    <div id="user-info" style="margin-bottom:24px">
+      <div style="font-size:1.1rem;font-weight:700;color:var(--navy)" id="user-display-name"></div>
+      <div style="font-size:0.9rem;color:var(--text-light)" id="user-display-phone"></div>
+    </div>
+    <h4 style="font-family:'Cinzel',serif;color:var(--gold-dark);margin-bottom:16px">✦ ORDER HISTORY ✦</h4>
+    <div id="order-history" style="max-height:300px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- SMS NOTIFICATION MOCK -->
+<div id="sms-mock" class="sms-notification hidden">
+  <div class="sms-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:24px;height:24px;background:var(--gold);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:700">𑀲</div>
+      <span>SGCM Message</span>
+    </div>
+    <span style="font-size:0.7rem;opacity:0.7">now</span>
+  </div>
+  <div class="sms-body" id="sms-msg"></div>
 </div>
 
 <!-- TOAST CONTAINER -->

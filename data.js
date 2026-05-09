@@ -4,7 +4,8 @@ const DB = {
   KEYS: {
     SAREES: 'sgcm_sarees', SETTINGS: 'sgcm_settings',
     CART: 'sgcm_cart', FAVORITES: 'sgcm_favorites',
-    THEME: 'sgcm_theme', INIT: 'sgcm_initialized'
+    THEME: 'sgcm_theme', INIT: 'sgcm_initialized',
+    USERS: 'sgcm_users', ORDERS: 'sgcm_orders', SESSION: 'sgcm_session'
   },
 
   DEFAULT_SAREES: [
@@ -39,7 +40,6 @@ const DB = {
 
   migrate() {
     const s = this.getSettings();
-    // Version-based force update — bumping settingsV forces all browsers to update
     if (!s.settingsV || s.settingsV < 3) {
       s.phone    = '8639979748';
       s.email    = 'sgcm121@gmail.com';
@@ -55,6 +55,8 @@ const DB = {
       localStorage.setItem(this.KEYS.SETTINGS, JSON.stringify(this.DEFAULT_SETTINGS));
       localStorage.setItem(this.KEYS.CART, JSON.stringify([]));
       localStorage.setItem(this.KEYS.FAVORITES, JSON.stringify([]));
+      localStorage.setItem(this.KEYS.USERS, JSON.stringify([]));
+      localStorage.setItem(this.KEYS.ORDERS, JSON.stringify([]));
       localStorage.setItem(this.KEYS.INIT, 'true');
     }
     this.migrate();
@@ -108,5 +110,46 @@ const DB = {
 
   getTheme() { return localStorage.getItem(this.KEYS.THEME) || 'light'; },
   saveTheme(t) { localStorage.setItem(this.KEYS.THEME, t); },
-  verifyAdmin(pw) { return pw === this.getSettings().adminPassword; }
+  verifyAdmin(pw) { return pw === this.getSettings().adminPassword; },
+
+  /* ── CUSTOMERS ── */
+  getUsers() { return JSON.parse(localStorage.getItem(this.KEYS.USERS) || '[]'); },
+  saveUsers(u) { localStorage.setItem(this.KEYS.USERS, JSON.stringify(u)); },
+  
+  registerUser(user) {
+    const users = this.getUsers();
+    if (users.find(u => u.phone === user.phone)) return { success: false, msg: 'Phone number already registered' };
+    users.push(user);
+    this.saveUsers(users);
+    return { success: true, user };
+  },
+
+  loginUser(phone, password) {
+    const user = this.getUsers().find(u => u.phone === phone && u.password === password);
+    if (user) {
+      localStorage.setItem(this.KEYS.SESSION, JSON.stringify(user));
+      return { success: true, user };
+    }
+    return { success: false, msg: 'Invalid phone or password' };
+  },
+
+  getCurrentUser() { return JSON.parse(localStorage.getItem(this.KEYS.SESSION) || 'null'); },
+  logoutUser() { localStorage.removeItem(this.KEYS.SESSION); },
+
+  /* ── ORDERS ── */
+  getOrders() { return JSON.parse(localStorage.getItem(this.KEYS.ORDERS) || '[]'); },
+  saveOrders(o) { localStorage.setItem(this.KEYS.ORDERS, JSON.stringify(o)); },
+
+  placeOrder(order) {
+    const orders = this.getOrders();
+    order.id = 'ORD-' + Date.now().toString().slice(-6);
+    order.date = new Date().toISOString();
+    orders.push(order);
+    this.saveOrders(orders);
+    return order;
+  },
+
+  getUserOrders(phone) {
+    return this.getOrders().filter(o => o.phone === phone);
+  }
 };

@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGrid();
   updateBadges();
   setupFilters();
+  checkUserSession();
+});
+
+document.getElementById('user-btn')?.addEventListener('click', () => {
+  const user = DB.getCurrentUser();
+  if (user) openModal('profile-modal', renderOrders);
+  else openModal('auth-modal');
 });
 
 /* ── SETTINGS ── */
@@ -253,6 +260,146 @@ function openDetail(id) {
     </div>` : ''}
   `;
   openModal('detail-modal');
+}
+
+/* ── AUTH HANDLERS ── */
+function switchAuthTab(tab) {
+  document.getElementById('auth-login-form').classList.toggle('hidden', tab === 'signup');
+  document.getElementById('auth-signup-form').classList.toggle('hidden', tab === 'login');
+  document.getElementById('tab-btn-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-btn-signup').classList.toggle('active', tab === 'signup');
+}
+
+function handleSignUp() {
+  const name = document.getElementById('signup-name').value.trim();
+  const phone = document.getElementById('signup-phone').value.trim();
+  const password = document.getElementById('signup-pw').value.trim();
+
+  if (!name || !phone || !password) return showToast('❌ Please fill all fields');
+  
+  const res = DB.registerUser({ name, phone, password });
+  if (res.success) {
+    showToast('✅ Account created successfully!');
+    showMockSMS(phone, `Welcome to SGCM, ${name}! Your account is now active. Explore our premium sarees.`);
+    closeModal('auth-modal');
+    DB.loginUser(phone, password);
+    checkUserSession();
+  } else {
+    showToast(`❌ ${res.msg}`);
+  }
+}
+
+function handleLogin() {
+  const phone = document.getElementById('login-phone').value.trim();
+  const password = document.getElementById('login-pw').value.trim();
+
+  if (!phone || !password) return showToast('❌ Please fill all fields');
+  
+  const res = DB.loginUser(phone, password);
+  if (res.success) {
+    showToast(`👋 Welcome back, ${res.user.name}!`);
+    closeModal('auth-modal');
+    checkUserSession();
+  } else {
+    showToast(`❌ ${res.msg}`);
+  }
+}
+
+function handleLogout() {
+  DB.logoutUser();
+  checkUserSession();
+  closeModal('profile-modal');
+  showToast('🚪 Logged out successfully');
+}
+
+function checkUserSession() {
+  const user = DB.getCurrentUser();
+  const userBtn = document.getElementById('user-btn');
+  if (user) {
+    if (userBtn) userBtn.innerHTML = `👤 <small style="font-size:0.6rem;display:block;margin-top:-4px">${user.name.split(' ')[0]}</small>`;
+    document.getElementById('user-display-name').textContent = user.name;
+    document.getElementById('user-display-phone').textContent = '📞 ' + user.phone;
+  } else {
+    if (userBtn) userBtn.innerHTML = `👤`;
+  }
+}
+
+function showMockSMS(phone, msg) {
+  const el = document.getElementById('sms-mock');
+  const msgEl = document.getElementById('sms-msg');
+  if (!el || !msgEl) return;
+  msgEl.textContent = msg;
+  el.classList.remove('hidden');
+  el.style.animation = 'smsIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) both';
+  setTimeout(() => {
+    el.style.animation = 'smsOut 0.5s ease both';
+    setTimeout(() => el.classList.add('hidden'), 500);
+  }, 6000);
+}
+
+/* ── ORDER HISTORY ── */
+function renderOrders() {
+  const user = DB.getCurrentUser();
+  if (!user) return;
+  const orders = DB.getUserOrders(user.phone);
+  const el = document.getElementById('order-history');
+  if (!el) return;
+  
+  if (orders.length === 0) {
+    el.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px">No orders yet. Start shopping! 🛍️</p>';
+    return;
+  }
+  
+  const sarees = DB.getSarees();
+  el.innerHTML = orders.reverse().map(o => `
+    <div class="admin-card" style="padding:16px;margin-bottom:12px;border-left:4px solid var(--gold)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <span style="font-weight:700;color:var(--navy)">${o.id}</span>
+        <span style="font-size:0.8rem;color:var(--text-light)">${new Date(o.date).toLocaleDateString()}</span>
+      </div>
+      <div style="font-size:0.85rem">
+        ${o.items.map(i => {
+          const s = sarees.find(x => x.id === i.id);
+          return `<div>${s ? s.name : 'Unknown Saree'} × ${i.quantity}</div>`;
+        }).join('')}
+      </div>
+      <div style="text-align:right;font-weight:700;color:var(--gold-dark);margin-top:8px">Total: ₹${o.total.toLocaleString('en-IN')}</div>
+    </div>
+  `).join('');
+}
+
+function processCheckout() {
+  const cart = DB.getCart();
+  if (cart.length === 0) return showToast('❌ Cart is empty');
+  
+  const user = DB.getCurrentUser();
+  const sarees = DB.getSarees();
+  let total = 0;
+  cart.forEach(ci => {
+    const s = sarees.find(x => x.id === ci.id);
+    if (s) total += Math.round(s.price * (1 - s.discount / 100)) * ci.quantity;
+  });
+
+  if (user) {
+    DB.placeOrder({
+      phone: user.phone,
+      items: cart,
+      total: total
+    });
+  }
+  
+  const waMsg = `Order Details:%0A${cart.map(ci => {
+    const s = sarees.find(x => x.id === ci.id);
+    return `- ${s ? s.name : ci.id} (Qty: ${ci.quantity})`;
+  }).join('%0A')}%0A%0ATotal: ₹${total.toLocaleString('en-IN')}`;
+  
+  const s = DB.getSettings();
+  window.open(`https://wa.me/${s.whatsapp || '918639979748'}?text=${waMsg}`, '_blank');
+  
+  DB.clearCart();
+  updateBadges();
+  closeModal('cart-modal');
+  showToast('✅ Order placed! We will contact you soon.');
 }
 
 /* ── AI ── */
