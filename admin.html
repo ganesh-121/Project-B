@@ -305,7 +305,7 @@ function renderInventory() {
       <td>${s.fabric}</td>
       <td>${s.color}</td>
       <td>${s.occasion}</td>
-      <td>₹${s.price.toLocaleString('en-IN')} <small style="color:var(--gold-dark)">(₹${dp.toLocaleString('en-IN')})</small></td>
+      <td>₹${dp.toLocaleString('en-IN')}${s.discount > 0 ? ` <small style="color:var(--text-light);text-decoration:line-through">(₹${s.price.toLocaleString('en-IN')})</small>` : ''}</td>
       <td>${s.discount}%</td>
       <td><input type="number" value="${s.stock}" min="0" style="width:60px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--cream);color:var(--text-dark)" onchange="quickStock('${s.id}',this.value)"/></td>
       <td>
